@@ -4,9 +4,12 @@ A fully functioning app with which you can draw using different colors and thick
 #### NO EXTERNAL LIBRARIES NEEDED!
 # Usage
 - Drag the Circle to Draw.
-- Choose COLOR 🎨 and THICKNESS using the Comboboxes.
-- Click ERASE to erase, and click it again to turn it off.
-- Click CLEAR to erase your entire drawing.
-- Use PEN UP and PEN DOWN if you want to move your cursor(circle) to a different position without drawing.
+- Choose COLOR 🎨 using the button.
+- Choose 'PEN THICKNESS' using the combobox.
+- Click 'ERASE' to erase, and click it again to turn off erasing mode.
+- Click 'CLEAR' to reset screen and clear your entire drawing.
+- Use 'P' Key to 'Pen Up' and 'Pen Down'.
 # Preview
-<img src="preview.png">
+<img src="Preview Images/preview.png">
+<img src="Preview Images/preview2.png">
+<img src="Preview Images/preview3.png">
