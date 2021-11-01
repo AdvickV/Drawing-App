@@ -10,6 +10,4 @@ A fully functioning app with which you can draw using different colors and thick
 - Click 'CLEAR' to reset screen and clear your entire drawing.
 - Use 'P' Key to 'Pen Up' and 'Pen Down'.
 # Preview
-<img src="Preview Images/preview.png">
-<img src="Preview Images/preview2.png">
-<img src="Preview Images/preview3.png">
+<img src="preview.png">
