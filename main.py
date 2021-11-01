@@ -1,71 +1,92 @@
 from tkinter import *
+from tkinter import colorchooser
 from tkinter.ttk import Combobox
 import turtle as tt
 
 MODE = "write"
+PENMODE = "DOWN"
+COLOR = "Black"
 
 
 # Functions
+def reset():
+    drawer.pendown()
+    penmode_l.configure(text="PENMODE: DOWN")	
+    drawer.goto(0, 0)
+    drawer.clear()
+
+
+def choose_color():
+    global COLOR
+    color_code = colorchooser.askcolor(title="Choose Pen Color")
+    if color_code[1]:
+        COLOR = color_code[1]
+
+
 def draw(x, y):
     drawer.ondrag(None)
     drawer.setheading(drawer.towards(x, y))
     if MODE == "write":
-        drawer.pencolor(color.get())
+        drawer.pencolor(COLOR)
     elif MODE == "erase":
         drawer.pencolor("white")
-    drawer.width(thickness.get() + 2)
+    drawer.width(thickness_spbox.get())
     drawer.goto(x, y)
     drawer.ondrag(draw)
 
 
-def change_mode():
+
+def change_write_mode():
     global MODE
     if MODE == "write":
         MODE = "erase"
+        drawer.pendown()
         erase_b.configure(bg="black", fg="white")
     elif MODE == "erase":
         MODE = "write"
+        drawer.pendown()
         erase_b.configure(bg="#0edee6", fg="black")
+
+
+def change_penmode(self):
+    global PENMODE
+    if PENMODE == "DOWN":
+        drawer.penup()
+        penmode_l.configure(text="PENMODE: UP")
+        PENMODE = "UP"
+    elif PENMODE == "UP":
+        drawer.pendown()
+        penmode_l.configure(text="PENMODE: DOWN")
+        PENMODE = "DOWN"    
 
 
 # Create GUI
 window = Tk()
 window.title("Drawing App")
+window.geometry("+0+0")
 window.config(padx=25, pady=50)
 window.iconbitmap("favicon.ico")
 
-color = StringVar()
-color_cbox = Combobox(window, width=10, textvariable=color)
-color_cbox["values"] = ("Red",
-                        "Green",
-                        "Blue",
-                        "Yellow",
-                        "Orange",
-                        "Pink",
-                        "Black")
-color_cbox.grid(column=0, row=0, padx=(0, 25))
-color_cbox.current(0)
+window.bind("<p>", func=change_penmode)
 
-thickness = IntVar()
-thickness_cbox = Combobox(window, width=5, textvariable=thickness)
-thickness_cbox["values"] = (1, 2, 3, 4, 5)
-thickness_cbox.grid(column=1, row=0)
-thickness_cbox.current(0)
+img = PhotoImage(file="color-wheel.png")
+color = Button(window, image=img, command=choose_color)
+color.grid(column=0, row=0)
 
-erase_b = Button(window, text="Erase", bg="#0edee6", command=change_mode)
+thickness_spbox = Spinbox(from_=1, to=25, width=5)
+thickness_spbox.grid(column=1, row=0)
+
+erase_b = Button(window, text="Erase", bg="#0edee6", command=change_write_mode)
 erase_b.grid(column=2, row=0, padx=25)
 
-clear_b = Button(window, text="Clear", bg="#09ff00", command=lambda: drawer.clear())
+clear_b = Button(window, text="Clear", bg="#09ff00", command=reset)
 clear_b.grid(column=3, row=0)
 
 canvas = Canvas(window, width=600, height=600)
-canvas.grid(column=0, row=1, columnspan=4, pady=(25, 0))
+canvas.grid(column=0, row=1, columnspan=4, pady=(25, 25))
 
-penup_b = Button(window, text="Pen Up", bg="#ffbc03", width=10, command=lambda: drawer.penup())
-penup_b.grid(column=0, row=2, pady=(25, 0))
-
-pendown_b = Button(window, text="Pen Down", bg="#ffbc03", width=10, command=lambda: drawer.pendown())
-pendown_b.grid(column=3, row=2, pady=(25, 0))
+penmode_l = Label(window, text="PENMODE: DOWN", font=("Times New Roman", 20, "bold"), fg="brown")
+penmode_l.grid(column=0, row=2, columnspan=4)
 
 # Create Turtle
 drawer = tt.RawTurtle(canvas)
